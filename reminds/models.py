@@ -23,7 +23,7 @@ class Remind(models.Model):
             ('day', '每天'),
             ('once', '仅一次'),
         ),
-        default='everyyear'
+        default='year'
     )
 
     def __str__(self):
