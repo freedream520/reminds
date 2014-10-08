@@ -1,9 +1,10 @@
 from django.db import models
+from datetime import datetime
 
 
 class Remind(models.Model):
     remind_date = models.DateTimeField('Remind Date')
-    remind_text = models.TextField('Remind Text')
+    remind_text = models.CharField('Remind Text', max_length=128)
     remind_email = models.EmailField('Remind Email')
     remind_cycle = models.CharField(
         'Remind Cycle',
@@ -19,4 +20,4 @@ class Remind(models.Model):
     )
 
     def __str__(self):
-        return self.remind_date
+        return datetime.strftime(self.remind_date, '%m-%d %H:%M:%S')
