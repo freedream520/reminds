@@ -54,7 +54,4 @@ docs/_build/
 target/
 
 # my
-*.xls
-*.xlsx
-.~lock*
-test_data/
+db.sqlite3
