@@ -17,3 +17,6 @@ class Remind(models.Model):
         ),
         default='everyyear'
     )
+
+    def __str__(self):
+        return self.remind_date
