@@ -6,6 +6,7 @@ class Remind(models.Model):
     remind_text = models.TextField()
     remind_email = models.EmailField()
     remind_cycle = models.CharField(
+        max_length=10,
         choices=(
             ('everyyear', 'everyyear'),
             ('everymonth', 'everymonth'),
