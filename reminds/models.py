@@ -17,13 +17,13 @@ class Remind(models.Model):
         '提醒周期',
         max_length=10,
         choices=(
-            ('year', '每年'),
-            ('month', '每月'),
-            ('week', '每周'),
-            ('day', '每天'),
+            ('yearly', '每年'),
+            ('monthly', '每月'),
+            ('weekly', '每周'),
+            ('daily', '每天'),
             ('once', '仅一次'),
         ),
-        default='year'
+        default='yearly'
     )
 
     def __str__(self):
