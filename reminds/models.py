@@ -8,6 +8,9 @@ import sys
 import fileinput
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+cmd = '%s/.venv/bin/python %s/send_remind.py' % (BASE_DIR, BASE_DIR)
+
 class Remind(models.Model):
 
     class Meta:
@@ -31,7 +34,7 @@ class Remind(models.Model):
     )
 
     def __str__(self):
-        return datetime.strftime(self.remind_date, '%m-%d %H:%M')
+        return datetime.strftime(self.remind_date, '%m-%d')
 
     def save(self, *args, **kwargs):
         super(Remind, self).save(*args, **kwargs)
@@ -44,26 +47,32 @@ class Remind(models.Model):
 
     def parse_cron(self, date, cycle):
         if cycle == 'once':
-            cron = '%s %s %s %s %s send_remind #%s' % (
-                date.minute, date.hour, date.day, date.month, date.isoweekday(), self.id)
+            cron = '%s %s %s %s %s %s %s %s r_id%s' % (
+                date.minute, date.hour, date.day,
+                date.month, date.isoweekday(), cmd,
+                self.remind_email, self.remind_text, self.id)
         elif cycle == 'daily':
-            cron = '%s %s * * * send_remind #%s' % (
-                date.minute, date.hour, self.id)
+            cron = '%s %s * * * %s %s %s r_id%s' % (
+                date.minute, date.hour, cmd,
+                self.remind_email, self.remind_text, self.id)
         elif cycle == 'weekly':
-            cron = '%s %s * * %s send_remind #%s' % (
-                date.minute, date.hour, date.isoweekday(), self.id)
+            cron = '%s %s * * %s %s %s %s r_id%s' % (
+                date.minute, date.hour, date.isoweekday(), cmd,
+                self.remind_email, self.remind_text, self.id)
         elif cycle == 'monthly':
-            cron = '%s %s %s * * send_remind #%s' % (
-                date.minute, date.hour, date.day, self.id)
+            cron = '%s %s %s * * %s %s %s r_id%s' % (
+                date.minute, date.hour, date.day, cmd,
+                self.remind_email, self.remind_text, self.id)
         elif cycle == 'yearly':
-            cron = '%s %s %s %s * send_remind #%s' % (
-                date.minute, date.hour, date.day, date.month, self.id)
+            cron = '%s %s %s %s * %s %s %s r_id%s' % (
+                date.minute, date.hour, date.day, date.month, cmd,
+                self.remind_email, self.remind_text, self.id)
         return cron
 
     def update_cron(self, cron):
         is_update = False
         for line in fileinput.input('remind.cron', inplace=True):
-            if '#%s' % self.id in line:
+            if 'r_id%s' % self.id in line:
                 line = cron + '\n'
                 is_update = True
             sys.stdout.write(line)

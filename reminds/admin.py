@@ -13,7 +13,7 @@ def delete_selected(modeladmin, request, queryset):
         ids.append(i.id)
         i.delete()
     for line in fileinput.input('remind.cron', inplace=True):
-        remind_id = line.split('#')[1]
+        remind_id = line.split('r_id')[1]
         if remind_id in ids:
             line = ''
         sys.stdout.write(line)
@@ -21,7 +21,7 @@ def delete_selected(modeladmin, request, queryset):
 delete_selected.short_description = '删除已选项'
 
 def remind_date(obj):
-    return datetime.strftime(obj.remind_date, '%m-%d %H:%M:%S')
+    return datetime.strftime(obj.remind_date, '%m-%d')
 remind_date.short_description = '提醒日期'
 
 
