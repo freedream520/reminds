@@ -13,7 +13,7 @@ class Remind(models.Model):
     class Meta:
         verbose_name_plural = '我的提醒'
 
-    user = models.ForeignKey(User, editable=False, null=True, blank=True)
+    user = models.ForeignKey(User, verbose_name='用户名', editable=False, null=True, blank=True)
     remind_date = models.DateTimeField('提醒日期')
     remind_text = models.CharField('提醒信息', max_length=128)
     remind_email = models.EmailField('提醒邮箱')

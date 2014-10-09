@@ -28,8 +28,11 @@ remind_date.short_description = '提醒日期'
 class RemindAdmin(admin.ModelAdmin):
     list_display = [
         remind_date, 'remind_text',
-        'remind_email', 'remind_cycle'
+        'remind_email', 'remind_cycle', 'user'
     ]
+
+    search_fields = ['remind_text']
+    list_filter = ['remind_date']
 
     actions = [delete_selected]
 
@@ -38,7 +41,10 @@ class RemindAdmin(admin.ModelAdmin):
         obj.save()
 
     def get_queryset(self, request):
-        return super(RemindAdmin, self).get_queryset(request).filter(user=request.user)
+        if not request.user.is_superuser:
+            return super(RemindAdmin, self).get_queryset(request).filter(user=request.user)
+        else:
+            return super(RemindAdmin, self).get_queryset(request).all()
 
 
 admin.site.register(Remind, RemindAdmin)
