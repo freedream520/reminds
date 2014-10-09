@@ -38,6 +38,10 @@ class Remind(models.Model):
         self.update_cron(self.parse_cron(
             self.remind_date, self.remind_cycle))
 
+    def delete(self):
+        self.remove_cron('#%s' % self.id)
+        super(Remind, self).delete()
+
     def parse_cron(self, date, cycle):
         if cycle == 'once':
             cron = '%s %s %s %s %s send_remind #%s' % (
@@ -57,10 +61,9 @@ class Remind(models.Model):
         return cron
 
     def update_cron(self, cron):
-        remind_id = '#' + cron.split('#')[1]
         is_update = False
         for line in fileinput.input('remind.cron', inplace=True):
-            if remind_id in line:
+            if '#%s' % self.id in line:
                 line = cron + '\n'
                 is_update = True
             sys.stdout.write(line)
@@ -69,5 +72,9 @@ class Remind(models.Model):
                 crontab.write(cron + '\n')
         os.system('crontab remind.cron')
 
-    def remove_cron(self, cron):
-        pass
+    def remove_cron(self, remind_id):
+        for line in fileinput.input('remind.cron', inplace=True):
+            if remind_id in line:
+                line = ''
+            sys.stdout.write(line)
+        os.system('crontab remind.cron')
