@@ -1,5 +1,5 @@
 """
-Django settings for date_remind project.
+Django settings for main project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -50,9 +50,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'date_remind.urls'
+ROOT_URLCONF = 'main.urls'
 
-WSGI_APPLICATION = 'date_remind.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database
