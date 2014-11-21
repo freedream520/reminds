@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'reminds',
+    'account',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,3 +85,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ADMINS = (('axiaoxin', '254606826@qq.com'),)
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
