@@ -6,7 +6,6 @@
     <title>{% block title %}{% endblock %} | Reminds</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" media="screen">
-    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static "css/bootswatch.min.css" %}">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,17 +25,10 @@
           </button>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="./help/">帮助</a>
-            </li>
-          </ul>
-
           <ul class="nav navbar-nav navbar-right">
             <li><a href="./register/" target="_blank">注册</a></li>
             <li><a href="./login/" target="_blank">登录</a></li>
           </ul>
-
         </div>
       </div>
     </div>
@@ -52,14 +44,11 @@
             <p>联系我 <a href='&#109;ailto&#58;%&#51;254&#54;0%3&#54;%38%32&#54;&#64;qq&#46;com'>2546&#48;&#54;8&#50;6&#64;qq&#46;c&#111;&#109;</a>.</p>
           </div>
         </div>
-
       </footer>
-
-
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{% static "js/jquery-1.10.2.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script src="{% static "js/bootswatch.js" %}"></script>
   </body>
