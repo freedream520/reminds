@@ -5,14 +5,18 @@ from django.contrib.auth.models import User
 
 class RegisterForm(forms.Form):
     username = forms.CharField(label=u'用户名', min_length=3, max_length=20,
-                               required=True, widget=forms.TextInput(attrs={'class': 'form-control input-sm'}))
-    email = forms.EmailField(label=u'联系邮箱', required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control input-sm',
+                                                             'required': True}))
+    email = forms.EmailField(label=u'联系邮箱',
                              widget=forms.TextInput(attrs={'placeholder': '填写真实邮箱用于重置密码',
-                                                           'class': 'form-control input-sm'}))
-    password = forms.CharField(label=u'密码', min_length=6, max_length=16, required=True,
-                               widget=forms.PasswordInput(attrs={'class': 'form-control input-sm'}))
-    password_ = forms.CharField(label=u'确认密码', min_length=6, max_length=16, required=True,
-                                widget=forms.PasswordInput(attrs={'class': 'form-control input-sm'}))
+                                                           'class': 'form-control input-sm',
+                                                           'required': True}))
+    password = forms.CharField(label=u'密码', min_length=6, max_length=16,
+                               widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
+                                                                 'required': True}))
+    password_ = forms.CharField(label=u'确认密码', min_length=6, max_length=16,
+                                widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
+                                                                  'required': True}))
 
     def clean_password(self):
         '''
