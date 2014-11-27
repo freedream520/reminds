@@ -47,10 +47,10 @@ def forgotpassword(request):
             cd = form.cleaned_data
             user = get_object_or_404(User, username=cd['username'])
             if user.email == cd['email']:
-                reset_code = tools.get_reset_password_code(user)
+                reset_password_code = tools.get_reset_password_code(user)
                 reset_expires = datetime.datetime.today() + datetime.timedelta(days=1)
-                code = ResetPasswordCode.object.get_or_create(user=user)
-                code.reset_code = reset_code
+                code, _ = ResetPasswordCode.objects.get_or_create(user=user)
+                code.reset_password_code = reset_password_code
                 code.reset_expires = reset_expires
                 code.save()
                 # send mail
@@ -58,8 +58,32 @@ def forgotpassword(request):
                     request,
                     messages.INFO,
                     u'重置密码链接已发送至你的邮箱，请注意查收！')
+            else:
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    u'邮箱错误！')
 
     return render_to_response(
         'account/forgotpassword.html',
         {'form': form, },
         context_instance=RequestContext(request))
+
+def reset_password(request, reset_password_code=''):
+    code = get_object_or_404(ResetPasswordCode, reset_password_code=reset_password_code)
+    if code.reset_expires < datetime.datetime.today():
+        messages.add_message(request, messages.INFO, u'重置密码有效期限已过！')
+        return HttpResponseRedirect('/account/')
+
+    form = account_forms.ResetPasswordForm()
+    if request.method == "POST":
+        form = account_forms.ResetPasswordForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = code.user
+            user.set_password(cd['password'])
+            user.save()
+            messages.add_message(request, messages.INFO, u'密码重置成功，请重新登录！')
+            return HttpResponseRedirect('/account/')
+
+    return render_to_response('resetpassword.html', {'form':form, }, context_instance=RequestContext(request))
