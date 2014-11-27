@@ -6,17 +6,17 @@ from django.contrib.auth.models import User
 class RegisterForm(forms.Form):
     username = forms.CharField(label=u'用户名', min_length=3, max_length=20,
                                widget=forms.TextInput(attrs={'class': 'form-control input-sm',
-                                                             'required': True}))
+                                                             'required': 'True'}))
     email = forms.EmailField(label=u'联系邮箱',
                              widget=forms.TextInput(attrs={'placeholder': '填写真实邮箱用于重置密码',
                                                            'class': 'form-control input-sm',
-                                                           'required': True}))
+                                                           'required': 'True'}))
     password = forms.CharField(label=u'密码', min_length=6, max_length=16,
                                widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
-                                                                 'required': True}))
+                                                                 'required': 'True'}))
     password_ = forms.CharField(label=u'确认密码', min_length=6, max_length=16,
                                 widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
-                                                                  'required': True}))
+                                                                  'required': 'True'}))
 
     def clean_password(self):
         '''
@@ -53,8 +53,12 @@ class ResetPasswordForm(forms.Form):
     """
         忘记密码，重置密码表单
     """
-    password = forms.CharField(label=u'新的密码', widget=forms.PasswordInput(), max_length=16, min_length=6, required=True)
-    password_ = forms.CharField(label=u'确认密码', widget=forms.PasswordInput(), max_length=16, required=True, min_length=6)
+    password = forms.CharField(label=u'新的密码', max_length=16, min_length=6,
+                               widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
+                                                                 'required': 'True'}))
+    password_ = forms.CharField(label=u'确认密码', max_length=16, min_length=6,
+                                widget=forms.PasswordInput(attrs={'class': 'form-control input-sm',
+                                                                  'required': 'True'}))
 
     def clean_password(self):
         '''
@@ -80,8 +84,14 @@ class ForgetPasswordForm(forms.Form):
     """
         忘记密码，注册信息表单
     """
-    username = forms.CharField(label=u'用户名', min_length=3, max_length=20, required=True)
-    email = forms.EmailField(label=u'注册邮箱', required=True)
+    username = forms.CharField(label=u'用户名', min_length=3, max_length=20,
+                               widget=forms.TextInput(attrs={'class': 'form-control input-sm',
+                                                             'required': 'True',
+                                                             'placeholder': u'注册时填写的用户名'}))
+    email = forms.EmailField(label=u'邮箱',
+                             widget=forms.TextInput(attrs={'class': 'form-control input-sm',
+                                                           'required': 'True',
+                                                           'placeholder': u'注册时填写的邮箱'}))
 
     def clean_username(self):
         '''
