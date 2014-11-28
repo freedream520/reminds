@@ -4,11 +4,8 @@ from email.Utils import formatdate
 import smtplib
 from threading import Thread
 import logging
-from decouple import config
+from settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
-MAIL_HOST = config('MAIL_HOST')
-MAIL_USERNAME = config('MAIL_USERNAME')
-MAIL_PASSWORD = config('MAIL_PASSWORD')
 
 def _to_list(emails):
     if isinstance(emails, basestring):
@@ -25,13 +22,13 @@ def _send_email(email_addresses, subject, content):
         _charset="utf-8"
     )
     mail['Subject'] = Header(subject, 'utf-8')
-    mail['From'] = MAIL_USERNAME
+    mail['From'] = EMAIL_HOST_USER
     mail['To'] = ';'.join(email_addresses)
     mail['Date'] = formatdate()
 
     try:
-        smtp = smtplib.SMTP_SSL(MAIL_HOST, smtplib.SMTP_SSL_PORT)
-        smtp.login(MAIL_USERNAME, MAIL_PASSWORD)
+        smtp = smtplib.SMTP_SSL(EMAIL_HOST, smtplib.SMTP_SSL_PORT)
+        smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
 
         smtp.sendmail(MAIL_USERNAME, email_addresses, mail.as_string())
         smtp.close()

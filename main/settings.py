@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from decouple import config
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -100,3 +101,10 @@ if DEBUG:
     DOMAIN = 'http://localhost:8000'
 else:
     DOMAIN = 'http://reminds.axiaoxin.com'
+
+EMAIL_ADMIN = 'ashinminisnake@gmail.com'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
