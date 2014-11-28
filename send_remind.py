@@ -7,7 +7,7 @@ from mailer import send_email
 @click.argument('to')
 @click.argument('text')
 @click.argument('id')
-def main(to, text, id):
+def main(to, text, _):
     send_email(to, 'Date Remind', text)
 
 if __name__ == '__main__':

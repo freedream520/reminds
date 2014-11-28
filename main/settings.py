@@ -95,3 +95,8 @@ TEMPLATE_DIRS = (
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+if DEBUG:
+    DOMAIN = 'http://localhost:8000'
+else:
+    DOMAIN = 'http://reminds.axiaoxin.com'

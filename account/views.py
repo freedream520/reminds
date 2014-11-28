@@ -9,7 +9,10 @@ from django.contrib.auth.models import User
 from account import forms as account_forms
 from account.models import ResetPasswordCode
 import tools
-import datetime
+from django.utils import timezone
+from mailer import send_email
+from main.settings import DOMAIN
+
 
 def register(request):
     form = account_forms.RegisterForm()
@@ -39,6 +42,7 @@ def register(request):
         {'form': form, },
         context_instance=RequestContext(request))
 
+
 def forgotpassword(request):
     form = account_forms.ForgetPasswordForm()
     if request.method == 'POST':
@@ -48,12 +52,13 @@ def forgotpassword(request):
             user = get_object_or_404(User, username=cd['username'])
             if user.email == cd['email']:
                 reset_password_code = tools.get_reset_password_code(user)
-                reset_expires = datetime.datetime.today() + datetime.timedelta(days=1)
+                reset_expires = timezone.now() + timezone.timedelta(1)
                 code, _ = ResetPasswordCode.objects.get_or_create(user=user)
                 code.reset_password_code = reset_password_code
                 code.reset_expires = reset_expires
                 code.save()
-                # send mail
+                info = u'点击链接 %s/account/resetpassword/%s 重置您的密码。【Reminds】' % (DOMAIN, reset_password_code)
+                send_email(user.email, u'Reminds重置密码', info)
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -69,9 +74,10 @@ def forgotpassword(request):
         {'form': form, },
         context_instance=RequestContext(request))
 
-def reset_password(request, reset_password_code=''):
+
+def resetpassword(request, reset_password_code=''):
     code = get_object_or_404(ResetPasswordCode, reset_password_code=reset_password_code)
-    if code.reset_expires < datetime.datetime.today():
+    if code.reset_expires < timezone.now():
         messages.add_message(request, messages.INFO, u'重置密码有效期限已过！')
         return HttpResponseRedirect('/account/')
 
@@ -86,4 +92,7 @@ def reset_password(request, reset_password_code=''):
             messages.add_message(request, messages.INFO, u'密码重置成功，请重新登录！')
             return HttpResponseRedirect('/account/')
 
-    return render_to_response('resetpassword.html', {'form':form, }, context_instance=RequestContext(request))
+    return render_to_response(
+        'account/resetpassword.html',
+        {'form': form, },
+        context_instance=RequestContext(request))
