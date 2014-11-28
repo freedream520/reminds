@@ -25,7 +25,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['reminds.axiaoxin.com']
 
 
 # Application definition
