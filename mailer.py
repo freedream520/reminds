@@ -30,7 +30,7 @@ def _send_email(email_addresses, subject, content):
         smtp = smtplib.SMTP_SSL(EMAIL_HOST, smtplib.SMTP_SSL_PORT)
         smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
 
-        smtp.sendmail(MAIL_USERNAME, email_addresses, mail.as_string())
+        smtp.sendmail(EMAIL_HOST_USER, email_addresses, mail.as_string())
         smtp.close()
         logging.info('email sended successfully')
     except Exception as e:
