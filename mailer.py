@@ -4,7 +4,7 @@ from email.Utils import formatdate
 import smtplib
 from threading import Thread
 import logging
-from settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+from main.settings import EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 
 def _to_list(emails):
