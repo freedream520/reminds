@@ -3,7 +3,7 @@ from email.Header import Header
 from email.Utils import formatdate
 import smtplib
 from threading import Thread
-import os
+import logging
 from decouple import config
 
 MAIL_HOST = config('MAIL_HOST')
@@ -35,8 +35,9 @@ def _send_email(email_addresses, subject, content):
 
         smtp.sendmail(MAIL_USERNAME, email_addresses, mail.as_string())
         smtp.close()
+        logging.info('email sended successfully')
     except Exception as e:
-        print e
+        logging.error(str(e))
 
 
 def send_email(email_addresses, subject, content):

@@ -37,7 +37,7 @@
     <div class="alert alert-info" align="center" style="z-index:1;">
         <a class="close" data-dismiss="alert">×</a>
         {% for m in messages %}
-        <p>{{m}}</p>
+        <p>{{m|safe}}</p>
         {% endfor %}
     </div>
     {% endif %}

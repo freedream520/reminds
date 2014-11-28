@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class RegisterForm(forms.Form):
     username = forms.CharField(label=u'用户名', min_length=3, max_length=20,
                                widget=forms.TextInput(attrs={'class': 'form-control input-sm',
+                                                             'placeholder': '3-12个字符',
                                                              'required': 'True'}))
     email = forms.EmailField(label=u'联系邮箱',
                              widget=forms.TextInput(attrs={'placeholder': '填写真实邮箱用于重置密码',

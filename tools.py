@@ -1,7 +1,10 @@
 #-*- coding:utf-8 -*-
 import hashlib
 import random
+import re
 
+def get_email_url(email):
+    return re.sub('.+@', 'mail.', email)
 
 def get_reset_password_code(user):
     salt = hashlib.sha1(str(random.random())).hexdigest()[:5]

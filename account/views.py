@@ -52,17 +52,19 @@ def forgotpassword(request):
             user = get_object_or_404(User, username=cd['username'])
             if user.email == cd['email']:
                 reset_password_code = tools.get_reset_password_code(user)
-                reset_expires = timezone.now() + timezone.timedelta(1)
+                reset_expires = timezone.localtime(timezone.now()) + timezone.timedelta(1)
                 code, _ = ResetPasswordCode.objects.get_or_create(user=user)
                 code.reset_password_code = reset_password_code
                 code.reset_expires = reset_expires
                 code.save()
                 info = u'点击链接 %s/account/resetpassword/%s 重置您的密码。【Reminds】' % (DOMAIN, reset_password_code)
                 send_email(user.email, u'Reminds重置密码', info)
+                email_url = tools.get_email_url(user.email)
                 messages.add_message(
                     request,
                     messages.INFO,
-                    u'重置密码链接已发送至你的邮箱，请注意查收！')
+                    u'重置密码链接已发送至你的<a href="http://%s" target="_blank">邮箱</a>，\
+                    请注意查收！' % email_url)
             else:
                 messages.add_message(
                     request,
@@ -75,9 +77,9 @@ def forgotpassword(request):
         context_instance=RequestContext(request))
 
 
-def resetpassword(request, reset_password_code=''):
+def resetpassword(request, reset_password_code):
     code = get_object_or_404(ResetPasswordCode, reset_password_code=reset_password_code)
-    if code.reset_expires < timezone.now():
+    if code.reset_expires < timezone.localtime(timezone.now()):
         messages.add_message(request, messages.INFO, u'重置密码有效期限已过！')
         return HttpResponseRedirect('/account/')
 
