@@ -84,11 +84,11 @@ class Remind(models.Model):
         if not is_update:
             with open(cron_file, 'a+') as crontab:
                 crontab.write(cron.encode('utf-8') + '\n')
-        os.system('crontab remind.cron')
+        os.system('crontab %s' % cron_file)
 
     def remove_cron(self, remind_id):
         for line in fileinput.input(cron_file, inplace=True):
             if remind_id in line:
                 line = ''
             sys.stdout.write(line.encode('utf-8'))
-        os.system('crontab remind.cron')
+        os.system('crontab %s' % cron_file)
