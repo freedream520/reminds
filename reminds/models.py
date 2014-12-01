@@ -6,6 +6,7 @@ import os
 import sys
 import fileinput
 import threading
+from tools import clearup_text
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -55,23 +56,23 @@ class Remind(models.Model):
             cron = u'%s %s %s %s %s %s %s %s r_id%s' % (
                 date.minute, date.hour, date.day,
                 date.month, date.isoweekday(), cmd,
-                self.remind_email, self.remind_text, self.id)
+                self.remind_email, clearup_text(self.remind_text), self.id)
         elif cycle == 'daily':
             cron = u'%s %s * * * %s %s %s r_id%s' % (
                 date.minute, date.hour, cmd,
-                self.remind_email, self.remind_text, self.id)
+                self.remind_email, clearup_text(self.remind_text), self.id)
         elif cycle == 'weekly':
             cron = u'%s %s * * %s %s %s %s r_id%s' % (
                 date.minute, date.hour, date.isoweekday(), cmd,
-                self.remind_email, self.remind_text, self.id)
+                self.remind_email, clearup_text(self.remind_text), self.id)
         elif cycle == 'monthly':
             cron = u'%s %s %s * * %s %s %s r_id%s' % (
                 date.minute, date.hour, date.day, cmd,
-                self.remind_email, self.remind_text, self.id)
+                self.remind_email, clearup_text(self.remind_text), self.id)
         elif cycle == 'yearly':
             cron = u'%s %s %s %s * %s %s %s r_id%s' % (
                 date.minute, date.hour, date.day, date.month, cmd,
-                self.remind_email, self.remind_text, self.id)
+                self.remind_email, clearup_text(self.remind_text), self.id)
         return cron
 
     def update_cron(self, cron):
