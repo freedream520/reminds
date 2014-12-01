@@ -78,7 +78,7 @@ class Remind(models.Model):
             sys.stdout.write(line)
         if not is_update:
             with open('remind.cron', 'a+') as crontab:
-                crontab.write(cron.encode('utf-8') + '\n')
+                crontab.write(cron.decode('utf-8') + '\n')
         os.system('crontab remind.cron')
 
     def remove_cron(self, remind_id):
