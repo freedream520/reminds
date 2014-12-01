@@ -9,7 +9,7 @@ import threading
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-cmd = u'%s/venv/bin/python %s/send_remind.py' % (BASE_DIR, BASE_DIR)
+cmd = u'%s/venv/bin/python %s/send_remind.py >/dev/null 2>&1' % (BASE_DIR, BASE_DIR)
 cron_file = os.path.join(BASE_DIR, 'remind.cron')
 
 if not os.path.exists(cron_file):
