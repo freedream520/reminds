@@ -43,11 +43,11 @@ class Remind(models.Model):
     def save(self, *args, **kwargs):
         super(Remind, self).save(*args, **kwargs)
         cron = self.parse_cron(self.remind_date, self.remind_cycle)
-        threading.Thread(target=self.update_cron, args=[cron]).start()
+        threading.Thread(target=self.update_cron, args=(cron,)).start()
 
     def delete(self):
         rid = '#%s' % self.id
-        threading.Thread(target=self.remove_cron, args=[rid]).start()
+        threading.Thread(target=self.remove_cron, args=(rid,)).start()
         super(Remind, self).delete()
 
     def parse_cron(self, date, cycle):
