@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import os
 import sys
 import fileinput
+import threading
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -41,11 +42,12 @@ class Remind(models.Model):
 
     def save(self, *args, **kwargs):
         super(Remind, self).save(*args, **kwargs)
-        self.update_cron(self.parse_cron(
-            self.remind_date, self.remind_cycle))
+        cron = self.parse_cron(self.remind_date, self.remind_cycle)
+        threading.Thread(target=self.update_cron, args=[cron]).start()
 
     def delete(self):
-        self.remove_cron('#%s' % self.id)
+        rid = '#%s' % self.id
+        threading.Thread(target=self.remove_cron, args=[rid]).start()
         super(Remind, self).delete()
 
     def parse_cron(self, date, cycle):
