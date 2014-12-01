@@ -1,1 +1,2 @@
 29 20 9 10 4 /home/ashin/projects/Date-Remind/.venv/bin/python /home/ashin/projects/Date-Remind/send_remind.py ashin.chen@bosondata.com.cn 213 r_id46
+42 10 1 12 * /home/ashin/projects/reminds/.venv/bin/python /home/ashin/projects/reminds/send_remind.py 25406826@qq.com 阿斯顿 r_id1
