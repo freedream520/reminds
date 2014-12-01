@@ -78,7 +78,7 @@ class Remind(models.Model):
             if 'r_id%s' % self.id in line:
                 line = cron + '\n'
                 is_update = True
-            sys.stdout.write(line)
+            sys.stdout.write(line.encode('utf-8'))
         if not is_update:
             with open(cron_file, 'a+') as crontab:
                 crontab.write(cron.encode('utf-8') + '\n')
@@ -88,5 +88,5 @@ class Remind(models.Model):
         for line in fileinput.input(cron_file, inplace=True):
             if remind_id in line:
                 line = ''
-            sys.stdout.write(line)
+            sys.stdout.write(line.encode('utf-8'))
         os.system('crontab %s' % cron_file)
