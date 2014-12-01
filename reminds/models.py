@@ -9,6 +9,10 @@ import fileinput
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 cmd = u'%s/.venv/bin/python %s/send_remind.py' % (BASE_DIR, BASE_DIR)
+cron_file = os.path.join(BASE_DIR, 'remind.cron')
+
+if not os.path.exists(cron_file):
+    os.system('touch %s' % cron_file)
 
 class Remind(models.Model):
 
@@ -70,19 +74,19 @@ class Remind(models.Model):
 
     def update_cron(self, cron):
         is_update = False
-        for line in fileinput.input('remind.cron', inplace=True):
+        for line in fileinput.input(cron_file, inplace=True):
             if 'r_id%s' % self.id in line:
                 line = cron + '\n'
                 is_update = True
             sys.stdout.write(line)
         if not is_update:
-            with open('remind.cron', 'a+') as crontab:
+            with open(cron_file, 'a+') as crontab:
                 crontab.write(cron.encode('utf-8') + '\n')
-        os.system('crontab remind.cron')
+        os.system('crontab %s' % cron_file)
 
     def remove_cron(self, remind_id):
-        for line in fileinput.input('remind.cron', inplace=True):
+        for line in fileinput.input(cron_file, inplace=True):
             if remind_id in line:
                 line = ''
             sys.stdout.write(line)
-        os.system('crontab remind.cron')
+        os.system('crontab %s' % cron_file)
